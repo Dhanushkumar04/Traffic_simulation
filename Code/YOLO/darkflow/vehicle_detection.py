@@ -24,7 +24,7 @@ def detectVehicles(filename):
    # print(result)
    for vehicle in result:
       label=vehicle['label']   #extracting label
-      if(label=="car" or label=="bus" or label=="bike" or label=="truck" or label=="rickshaw"):    # drawing box and writing label
+      if(label=="car" or label=="bus" or label=="bike" or label=="truck" or label=="rickshaw" or label=="ambulance"):    # drawing box and writing label
          top_left=(vehicle['topleft']['x'],vehicle['topleft']['y'])
          bottom_right=(vehicle['bottomright']['x'],vehicle['bottomright']['y'])
          img=cv2.rectangle(img,top_left,bottom_right,(0,255,0),3)    #green box of width 5

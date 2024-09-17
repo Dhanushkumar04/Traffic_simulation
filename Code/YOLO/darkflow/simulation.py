@@ -45,26 +45,28 @@ bikeTime = 1
 rickshawTime = 2.25 
 busTime = 2.5
 truckTime = 2.5
+ambulanceTime = 2.5
 
 # Count of cars at a traffic signal
 noOfCars = 0
 noOfBikes = 0
 noOfBuses =0
 noOfTrucks = 0
+noOfAmbulances = 0
 noOfRickshaws = 0
 noOfLanes = 2
 
 # Red signal time at which cars will be detected at a signal
 detectionTime = 5
 
-speeds = {'car':2.25, 'bus':1.8, 'truck':1.8, 'rickshaw':2, 'bike':2.5}  # average speeds of vehicles
+speeds = {'car':2.25, 'bus':1.8, 'truck':1.8, 'rickshaw':2, 'bike':2.5, 'ambulance':2.5}  # average speeds of vehicles
 
 # Coordinates of start
 x = {'right':[0,0,0], 'down':[755,727,697], 'left':[1400,1400,1400], 'up':[602,627,657]}    
 y = {'right':[348,370,398], 'down':[0,0,0], 'left':[498,466,436], 'up':[800,800,800]}
 
 vehicles = {'right': {0:[], 1:[], 2:[], 'crossed':0}, 'down': {0:[], 1:[], 2:[], 'crossed':0}, 'left': {0:[], 1:[], 2:[], 'crossed':0}, 'up': {0:[], 1:[], 2:[], 'crossed':0}}
-vehicleTypes = {0:'car', 1:'bus', 2:'truck', 3:'rickshaw', 4:'bike'}
+vehicleTypes = {0:'car', 1:'bus', 2:'truck', 3:'rickshaw', 4:'bike', 5:'ambulance'}
 directionNumbers = {0:'right', 1:'down', 2:'left', 3:'up'}
 
 # Coordinates of signal image, timer, and vehicle count
@@ -278,8 +280,8 @@ def initialize():
 
 # Set time according to formula
 def setTime():
-    global noOfCars, noOfBikes, noOfBuses, noOfTrucks, noOfRickshaws, noOfLanes
-    global carTime, busTime, truckTime, rickshawTime, bikeTime
+    global noOfCars, noOfBikes, noOfBuses, noOfTrucks, noOfRickshaws, noOfAmbulances, noOfLanes
+    global carTime, busTime, truckTime, rickshawTime, bikeTime, ambulanceTime
     os.system("say detecting vehicles, "+directionNumbers[(currentGreen+1)%noOfSignals])
 #    detection_result=detection(currentGreen,tfnet)
 #    greenTime = math.ceil(((noOfCars*carTime) + (noOfRickshaws*rickshawTime) + (noOfBuses*busTime) + (noOfBikes*bikeTime))/(noOfLanes+1))
@@ -290,7 +292,7 @@ def setTime():
     # greenTime = len(vehicles[currentGreen][0])+len(vehicles[currentGreen][1])+len(vehicles[currentGreen][2])
     # noOfVehicles = len(vehicles[directionNumbers[nextGreen]][1])+len(vehicles[directionNumbers[nextGreen]][2])-vehicles[directionNumbers[nextGreen]]['crossed']
     # print("no. of vehicles = ",noOfVehicles)
-    noOfCars, noOfBuses, noOfTrucks, noOfRickshaws, noOfBikes = 0,0,0,0,0
+    noOfCars, noOfBuses, noOfTrucks, noOfRickshaws, noOfAmbulances, noOfBikes = 0,0,0,0,0
     for j in range(len(vehicles[directionNumbers[nextGreen]][0])):
         vehicle = vehicles[directionNumbers[nextGreen]][0][j]
         if(vehicle.crossed==0):
@@ -309,10 +311,12 @@ def setTime():
                     noOfBuses += 1
                 elif(vclass=='truck'):
                     noOfTrucks += 1
+                elif(vclass=='ambulance'):
+                    noOfAmbulances += 1
                 elif(vclass=='rickshaw'):
                     noOfRickshaws += 1
     # print(noOfCars)
-    greenTime = math.ceil(((noOfCars*carTime) + (noOfRickshaws*rickshawTime) + (noOfBuses*busTime) + (noOfTrucks*truckTime)+ (noOfBikes*bikeTime))/(noOfLanes+1))
+    greenTime = math.ceil(((noOfCars*carTime) + (noOfRickshaws*rickshawTime) + (noOfBuses*busTime) + (noOfTrucks*truckTime)+ (noOfAmbulances*ambulanceTime)+ (noOfBikes*bikeTime))/(noOfLanes+1))
     # greenTime = math.ceil((noOfVehicles)/noOfLanes) 
     print('Green Time: ',greenTime)
     if(greenTime<defaultMinimum):
