@@ -508,6 +508,53 @@ class Main:
             # vehicle.render(screen)
             vehicle.move()
         pygame.display.update()
+        
+    class TrafficLight:
+        def __init__(self, lane_id):
+            self.lane_id = lane_id
+        self.state = "RED"  # Initial state is RED
+
+    def set_green(self):
+        self.state = "GREEN"
+
+    def set_red(self):
+        self.state = "RED"
+
+    def __str__(self):
+        return f"Lane {self.lane_id} Traffic Light: {self.state}"
+
+
+class TrafficControlSystem:
+    def __init__(self, number_of_lanes):
+        self.lights = [TrafficLight(lane_id=i) for i in range(number_of_lanes)]
+        self.ambulance_detected = False
+        self.ambulance_lane_id = None
+
+    def detect_ambulance(self, lane_id):
+        self.ambulance_detected = True
+        self.ambulance_lane_id = lane_id
+        print(f"Ambulance detected in lane {lane_id}!")
+
+    def clear_ambulance(self):
+        self.ambulance_detected = False
+        self.ambulance_lane_id = None
+        print("Ambulance has cleared.")
+
+    def update_traffic_lights(self):
+        if self.ambulance_detected:
+            for light in self.lights:
+                if light.lane_id == self.ambulance_lane_id:
+                    light.set_green()  # Green light for the ambulance lane
+                else:
+                    light.set_red()  # Red light for all other lanes
+        else:
+            print("Normal traffic control (no ambulance detected).")
+
+    def display_traffic_lights(self):
+        for light in self.lights:
+            print(light)
+
+
 
 Main()
 
