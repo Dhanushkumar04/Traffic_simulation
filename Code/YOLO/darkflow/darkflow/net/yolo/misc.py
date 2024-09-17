@@ -3,7 +3,7 @@ import numpy as np
 import cv2
 import os
 
-labels20 = ["aeroplane", "bicycle", "bird", "boat", "bottle",
+labels20 = ["aeroplane", "bicycle", "bird", "boat", "bottle", "ambulance"
     "bus", "car", "cat", "chair", "cow", "diningtable", "dog",
     "horse", "motorbike", "person", "pottedplant", "sheep", "sofa",
     "train", "tvmonitor"]
